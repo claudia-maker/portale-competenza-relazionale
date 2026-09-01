@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
@@ -46,10 +48,11 @@ export default function LoginPage() {
         if (error) throw error;
         router.push('/dashboard');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Si è verificato un errore durante l’operazione.';
       setMessage({
         type: 'error',
-        text: err.message || 'Si è verificato un errore durante l’operazione.',
+        text: errorMessage,
       });
     } finally {
       setLoading(false);
